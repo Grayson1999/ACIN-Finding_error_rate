@@ -16,11 +16,12 @@
         3. 이는 시간과 측정기를 같은 영상에 촬영하고 OCR을 통해 데이터를 가져오는 방법을 이용하여 데이터를 디지털화 하였다.
         * 결과 데이터
             1. 녹화 영상을 통해 시간에 따른 결과 데이터를 받아온다.<br>
+            2. [OCR]DataSet_i.csv 파일로 저장된다.(단,i는 1부터 1씩 증가)
             <p align="center"><img src="./readme_img/result1.2.png"  width="270" height="310"><p>
     2. Heart-rate(python) [[Heart-rate-measurement-using-camera](https://github.com/habom2310/Heart-rate-measurement-using-camera)]
         - 본 모듈은 결과데이터가 별도로 출력되지 않아 영상의 소요시간을 기준으로 데이터를 출력하였습니다.
         - 위 모듈의 데이터 형식은 각 동영상 시간에 따른 밀리세컨드(ms) 형식을 가진다. 이를 각각의 시각과 bpm으로 재표현하고, 이를 0.5초 간격으로 평균을 낸다.
-            - 시각으로 변경하는 이유는 녹화 당시의 시간을 따로 맞추어 줄 필요 없이 시각 데이터로 원하는 부분을 판별 할 수 있기 때문이다.ㄴ
+            - 시각으로 변경하는 이유는 녹화 당시의 시간을 따로 맞추어 줄 필요 없이 시각 데이터로 원하는 부분을 판별 할 수 있기 때문이다.
         - ※ 본 모듈 사용 시 서버 시간이 같이 녹화 되어야 함
         - ※ 본 모듈의 결과 값을 출력하는 알고리즘을 수정하였으므로, 기본 결과 값은 다름
         1. 동영상 0.0ms의 캡쳐본을 통해 영상의 처음 서버시간을 입력 받는다.(구현 중)
@@ -29,6 +30,6 @@
             * [동영상 이름].txt 파일로 bpm과 time데이터가 ","를 기준으로 구분된다. 이때 time은 영상의 진행시간(소요시간)을 ms로 환산한 것을 의미한다.
             <p align="center"><img src="./readme_img/python_ori_data.png"  width="270" height="310"><p>
         * 결과 데이터
-            * [changed][파일 이름].csv 파일 변경된다.
+            * [python]DataSet_i.csv 파일 변경된다.(단,i는 1부터 1씩 증가)
             * 시간은 동영상의 첫 장의 시간을 기준으로 하며 기존의 소요시간(ms)을 더하여 시간 형식으로 데이터를 변경한다.
             <p align="center"><img src="./readme_img/python_result_data.png"  width="270" height="310"><p>
