@@ -33,3 +33,9 @@
             * [python]DataSet_i.csv 파일 변경된다.(단,i는 1부터 1씩 증가)
             * 시간은 동영상의 첫 장의 시간을 기준으로 하며 기존의 소요시간(ms)을 더하여 시간 형식으로 데이터를 변경한다.
             <p align="center"><img src="./readme_img/python_result_data.png"  width="270" height="310"><p>
+3. 데이터 관리
+    * 본 프로그램은 python, cpp 모듈과 OCR을 이용하여 얻은 데이터, 총 3개의 결과 데이터를 출력한다.
+    * Data 폴더를 기준(root)으로
+        * DataSet_[i] -> i는 1부터 시작하며 1씩 증가한다.([ex] DataSet_1/)
+            * input: 입력에 필요한 영상(_OCR,_face,_face_180)이 보관되며, 형식 변환이 되지 않은 결과 파일을 보관한다.([ex] DataSet_1_OCR.mp4, DataSet_1_face.mp4)
+            * output: 3개의 결과 데이터가 보관된다.([ex] [OCR]DataSet_1_ocr.csv, [python]DataSet_1_face.csv)
