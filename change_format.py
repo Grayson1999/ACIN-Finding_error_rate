@@ -14,7 +14,7 @@ dic = {"time":[],"bpm":[]}
 
 ##0.0초 때의 시간을 입력받음
 # initial_time = input()
-initial_time = "17:14:25:262"
+initial_time = "17:33:30:095"
 # 소요시간은 시간 데이터 형식으로 변경
 def result_time(addtime,initial_time = initial_time):
     ini_time_split = initial_time.split(":")
@@ -36,6 +36,8 @@ def result_time(addtime,initial_time = initial_time):
     int_ini_time_list = [str(x) for x in int_ini_time_list]
     if len(int_ini_time_list[-1]) == 2:
         int_ini_time_list[-1] = "0" + int_ini_time_list[-1]
+    if len(int_ini_time_list[-2]) == 1:
+        int_ini_time_list[-2] = "0" + int_ini_time_list[-2]
 
     return ":".join(int_ini_time_list)
 
