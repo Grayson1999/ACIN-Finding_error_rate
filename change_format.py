@@ -1,99 +1,118 @@
-from unittest import result
 import pandas as pd
-import numpy as np
-import os
+from tkinter import *
+from tkinter import ttk
+from PIL import ImageTk,Image
 
-path_dir = 'C:/Users/kgg/Desktop/lab/heart-rate/ACIN-Finding_error_rate/Data/'
-## 데이터 파일 중 마지막 폴더 이름 가져오기(폴더 선택)
-last_file_name = os.listdir(path_dir)[-1]
-filename = "[python]"+last_file_name+"_face_180"
-#C:\Users\kgg\Desktop\lab\heart-rate\ACIN-Finding_error_rate\Data\DataSet_2\input\[python]DataSet_2_face_180.txt
-f = open(path_dir+last_file_name+"/input/"+filename+".txt", "r")
-
-dic = {"time":[],"bpm":[]}
-
-##0.0초 때의 시간을 입력받음
-# initial_time = input()
-initial_time = "17:33:30:095"
-# 소요시간은 시간 데이터 형식으로 변경
-def result_time(addtime,initial_time = initial_time):
-    ini_time_split = initial_time.split(":")
-    int_ini_time_list = [int(x) for x in ini_time_split]
-    addtime_split = addtime.split(".")
-    int_addtime_list = [int(x) for x in addtime_split]
-    int_ini_time_list[-1] += int_addtime_list[-1]
-    int_ini_time_list[-2] += int_addtime_list[0]
-    if int_ini_time_list[-1] >=1000:
-        int_ini_time_list[-2] += 1
-        int_ini_time_list[-1] -= 1000
-    if int_ini_time_list[-2] >=60:
-        int_ini_time_list[-3] += 1
-        int_ini_time_list[-2] -= 60
-    if int_ini_time_list[-3] >=60:
-        int_ini_time_list[-4] += 1
-        int_ini_time_list[-3] -= 60
+class Reformatting():
+    def __init__(self,ori_dic,filename,first_img):
+        self.ori_dic = ori_dic
+        self.temp_dic = {"time":[],"bpm":[]}
+        self.filename = filename
+        self.first_img =  first_img
     
-    int_ini_time_list = [str(x) for x in int_ini_time_list]
-    if len(int_ini_time_list[-1]) == 2:
-        int_ini_time_list[-1] = "0" + int_ini_time_list[-1]
-    if len(int_ini_time_list[-2]) == 1:
-        int_ini_time_list[-2] = "0" + int_ini_time_list[-2]
 
-    return ":".join(int_ini_time_list)
+    def find_initial_time(self):
+        win = Tk ()
+        win.title("기준 시간 입력")
+        win.geometry('1300x1000+500+500')
 
-
-
-# 소요시간 데이터를 읽어 dic에 저장
-while(True):
-    lines = f.readline()
-    if not lines:
-        break
-    lines = lines.split(",")
-    lines[-1] = lines[-1].strip().split(".")[0]
-    lines[-1] = lines[-1][:-3]+"."+lines[-1][-3:]
-    time = result_time(lines[-1])
-    dic["time"].append(time)
-    dic["bpm"].append(lines[1])
-
-
-## 0.5초 간격으로 평균 구하기   
-def mk_avg_result(initial_result):
-    result = {"time":[],"bpm":[]}
-    check = -1
-    temp = []
-    for i in range(len(initial_result["time"])):
-        ms = int(initial_result["time"][i][9:10])
-        if check == -1:
-            default_format = initial_result["time"][i][:9]
-            if ms <5:
-                check = False
+        fir_img = Image.fromarray(self.first_img)
+        img = ImageTk.PhotoImage(fir_img)
+        label = Label(image=img)
+        label.grid(column = 0 , row = 0)
+        def clickMe():
+            input_text = str.get()
+            if len(input_text) != 12:
+                pass
             else:
-                check = True
-        if ms < 5:
-            if check == True:
-                current_time = default_format + "5"
-                avg = sum(temp)/len(temp)
-                temp = []
-                result["time"].append(current_time)
-                result["bpm"].append(avg)
-                check = False
-                default_format = initial_result["time"][i][:9]
-            temp.append(float(initial_result["bpm"][i]))
-        else:
-            if check == False:
-                current_time = default_format + "0"
-                avg = sum(temp)/len(temp)
-                temp = []
-                result["time"].append(current_time)
-                result["bpm"].append(avg)
-                check = True
-                default_format = initial_result["time"][i][:9]
-            temp.append(float(initial_result["bpm"][i]))
-    return result
-                
-                
-    
-   
+                self.initial_time = input_text
+                win.destroy()
+        str = StringVar()
+        textbox = ttk.Entry(win, width=20, textvariable=str)
+        textbox.grid(column = 0 , row = 1)
+        action=ttk.Button(win, text="입력", command=clickMe)
+        action.grid(column=0, row=2)
+        win.mainloop()
 
-result_pd = pd.DataFrame(mk_avg_result(dic))
-result_pd.to_csv(path_dir+last_file_name+"/output/"+filename+".csv",encoding="cp949")
+
+     # 소요시간은 시간 데이터 형식으로 변경
+    def result_time(self, addtime):
+        initial_time = self.initial_time
+
+        ini_time_split = initial_time.split(":")
+        int_ini_time_list = [int(x) for x in ini_time_split]
+        addtime_split = addtime.split(".")
+        int_addtime_list = [int(x) for x in addtime_split]
+        int_ini_time_list[-1] += int_addtime_list[-1]
+        int_ini_time_list[-2] += int_addtime_list[0]
+        if int_ini_time_list[-1] >=1000:
+            int_ini_time_list[-2] += 1
+            int_ini_time_list[-1] -= 1000
+        if int_ini_time_list[-2] >=60:
+            int_ini_time_list[-3] += 1
+            int_ini_time_list[-2] -= 60
+        if int_ini_time_list[-3] >=60:
+            int_ini_time_list[-4] += 1
+            int_ini_time_list[-3] -= 60
+        
+        int_ini_time_list = [str(x) for x in int_ini_time_list]
+        if len(int_ini_time_list[-1]) == 2:
+            int_ini_time_list[-1] = "0" + int_ini_time_list[-1]
+        if len(int_ini_time_list[-2]) == 1:
+            int_ini_time_list[-2] = "0" + int_ini_time_list[-2]
+
+        return ":".join(int_ini_time_list)
+
+
+    # 소요시간 데이터를 읽어 dic에 저장
+    def duration_to_time(self):
+        for i in range(len(self.ori_dic["time"])):
+            round_duration = self.ori_dic["time"][i].strip().split(".")[0]
+            round_duration = round_duration[:-3]+"."+round_duration[-3:]
+            time = self.result_time(round_duration)
+            self.temp_dic["time"].append(time)
+            self.temp_dic["bpm"].append(self.ori_dic["bpm"][i])
+
+
+    ## 0.5초 간격으로 평균 구하기   
+    def mk_avg_result(self):
+        result = {"time":[],"bpm":[]}
+        check = -1
+        temp = []
+        for i in range(len(self.temp_dic["time"])):
+            ms = int(self.temp_dic["time"][i][9:10])
+            if check == -1:
+                default_format = self.temp_dic["time"][i][:9]
+                if ms <5:
+                    check = False
+                else:
+                    check = True
+            if ms < 5:
+                if check == True:
+                    current_time = default_format + "5"
+                    avg = sum(temp)/len(temp)
+                    temp = []
+                    result["time"].append(current_time)
+                    result["bpm"].append(avg)
+                    check = False
+                    default_format = self.temp_dic["time"][i][:9]
+                temp.append(float(self.temp_dic["bpm"][i]))
+            else:
+                if check == False:
+                    current_time = default_format + "0"
+                    avg = sum(temp)/len(temp)
+                    temp = []
+                    result["time"].append(current_time)
+                    result["bpm"].append(avg)
+                    check = True
+                    default_format = self.temp_dic["time"][i][:9]
+                temp.append(float(self.temp_dic["bpm"][i]))
+        return result
+
+
+    def main(self):
+        self.find_initial_time()
+        self.duration_to_time()
+        result_pd = pd.DataFrame(self.mk_avg_result())
+        result_pd.to_csv("[python]"+self.filename+".csv",encoding="cp949")
+
