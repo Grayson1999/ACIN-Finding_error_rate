@@ -249,7 +249,7 @@ class Arduino_formatting(Formatting):
     def __init__(self):
         print("--Arduino 변환--")
         self.temp_dic = {"time":[],"bpm":[]}
-        temp_dir = self.find_file_pathNname("Arduino","txt")
+        temp_dir = self.find_file_pathNname("arduino","txt")
         self.file_path = temp_dir[0]
         self.file_name = temp_dir[1]
         f = open(self.file_path+"/input/"+self.file_name,"r")
